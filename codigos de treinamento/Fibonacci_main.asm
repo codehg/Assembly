@@ -1,14 +1,15 @@
 # Internet example
 # Compute first twelve Fibonacci numbers  and        put in array, then print
-      .data
+         .data
 fibs: .word   0 : 12        # "array" of 12 words to contain fib values
 size: .word  12             # size of "array" 
-      .text
+         .text
+main:
                                           la         $t0, fibs        # load address of array
                                           la         $t5, size        # load address of size variable
                                           lw         $t5, 0($t5)      # load array size
                                           li         $t2, 1           # 1 is first and second Fib. number
-                                          add        .d $f0, $f2, $f4
+                                          add.d      $f0, $f2, $f4
                                           sw         $t2, 0($t0)      # F[0] = 1
                                           sw         $t2, 4($t0)      # F[1] = F[0] = 1
                                           addi       $t1, $t5, -2     # Counter for loop, will execute (size-2) times
