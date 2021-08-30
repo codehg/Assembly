@@ -1,0 +1,71 @@
+.data
+	ov: .asciiz "overflow\n" #print on screen
+
+.text
+	main:
+	
+	li $v0, 5 #reading signal
+	syscall
+	move $t1, $v0 #saving signal
+	
+	li $v0, 5 #reading A number
+	syscall
+	move $t2, $v0 #saving A number
+	
+	li $v0, 5 #reading B number
+	syscall
+	move $t3, $v0 #saving B number
+			
+	
+	beq $t1, 1, comsinal
+	beq $t1, $zero, semsinal
+	
+	li $v0, 10 #exit 
+	syscall #call the opereating system
+	
+	semsinal:
+		addu $s0, $t2, $t3
+		
+		nor $t4, $t2, $zero
+		sltu $t4, $t4, $t3
+		bne $t4, $zero, overflow
+		
+		li $v0, 1 #command to print interger
+		move $a0, $s0 #moving the content to a0 address to print
+		syscall
+		
+		li $v0, 10 #exit 
+		syscall #call the opereating system
+	
+	comsinal:
+		#add the values to compare
+		addu $s0, $t2, $t3
+		
+		#verify different signal
+		xor $t4, $t2, $t3
+		slt $t4, $t4, $zero
+		bne $t4, $zero, soma
+		
+		#verify overflow		
+		xor $t4, $s0, $t2
+		slt $t4, $t4, $zero
+		bne $t4, $zero, overflow
+		
+	soma:
+		li $v0, 1 #command to print interger
+		move $a0, $s0 #moving the content to a0 address to print
+		syscall
+	
+		li $v0, 10 #exit 
+		syscall #call the opereating system		
+			
+		
+	overflow:
+		li $v0, 4 #instruction to print a string
+		la $a0, ov #pointer to string address
+		syscall #print string	
+		li $v0, 10 #exit 
+		syscall #call the opereating system
+		
+	
+		
